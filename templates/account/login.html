@@ -1,0 +1,32 @@
+{% load static %}
+{% load socialaccount %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+
+    <h2>Login</h2>
+
+    <form method="post" action="{% url 'account_login' %}">
+        {% csrf_token %}
+        {{ form.username.label_tag }} {{ form.username }}
+        {{ form.password.label_tag }} {{ form.password }}
+        <button type="submit">Login</button>
+    </form>
+
+    <p>Don't have an account? <a href="{% url 'account_signup' %}">Sign up</a></p>
+    <p>Forgot your password? <a href="{% url 'account_reset_password' %}">Reset password</a></p>
+
+    <hr>
+
+    <p>Or log in with Google:</p>
+    <a href="{% provider_login_url 'google' method='oauth2' %}">
+        <img src="{% static 'icons/ogo_google_g_icon.png' %}" alt="Google Icon"> Log in with Google
+    </a>
+
+</body>
+</html>

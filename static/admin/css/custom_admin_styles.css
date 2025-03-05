@@ -1,0 +1,17 @@
+body {
+    direction: rtl;
+}
+
+/* Adjustments for specific elements */
+#header {
+    text-align: right;
+}
+
+#content {
+    float: right;
+}
+
+/* Adjust form elements */
+.form-row {
+    text-align: right;
+}

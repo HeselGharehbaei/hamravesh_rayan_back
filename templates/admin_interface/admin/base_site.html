@@ -1,0 +1,34 @@
+{% load static %}
+<!-- templates/admin_interface/base.html -->
+{% extends "admin_interface/admin/base_site.html" %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <style>
+        /* RTL adjustments for django-admin-interface */
+        * {
+            direction: rtl;
+        }
+
+        /* Example RTL adjustments for specific elements */
+        /* Adjustments for navbar */
+        .navbar {
+            float: right; /* Adjust alignment of navbar items */
+        }
+
+        /* Adjustments for sidebar */
+        .sidebar {
+            float: right; /* Adjust alignment of sidebar items */
+        }
+
+        /* Adjustments for content area */
+        .content-wrapper {
+            float: right; /* Adjust alignment of content */
+        }
+
+        /* Adjustments for forms */
+        .form-horizontal .control-label {
+            text-align: right; /* Align form labels to the right */
+        }
+    </style>
+{% endblock %}

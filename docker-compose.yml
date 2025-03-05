@@ -1,0 +1,114 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    container_name: web
+    command: >
+      sh -c "
+            python manage.py makemigrations &&
+            python manage.py migrate &&
+            python manage.py collectstatic --no-input --clear &&
+            gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 2 --threads 2 --timeout 1500 --preload"
+
+    volumes:
+      - .:/code
+      - static:/code/static
+      - media:/code/media
+    # ports:
+    #   - "8000:8000"
+    # depends_on:
+    #   - db
+    networks: 
+      - rayan  
+
+  # django-q:
+  #   build: .
+  #   container_name: django-q
+  #   command: >
+  #     sh -c "python manage.py qcluster"
+  #   volumes:
+  #     - .:/code
+  #   depends_on:
+  #     - web
+  #   networks:
+  #     - rayan  
+
+
+volumes:
+  static:
+    external: true
+  media:
+    external: true
+
+networks: 
+  rayan:
+    external: true     
+
+
+
+# services:
+#   db:
+#     container_name: db
+#     image: mysql:8.0-debian
+#     restart: always
+#     environment:
+#       MYSQL_DATABASE: rayanpos_rayan
+#       MYSQL_USER: rayanpos_admin
+#       MYSQL_PASSWORD: Msp137700
+#       MYSQL_ROOT_PASSWORD: Msp@137700
+#     volumes:
+#       - db_data:/var/lib/mysql
+#     ports:
+#       - "3306:3306"
+#     networks: 
+#       - rayan         
+  # database:
+  #   container_name: database
+  #   image: postgres
+  #   environment:
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: postgres
+  #     POSTGRES_DB: postgres
+  #   volumes:
+  #     - postgres:/var/lib/postgresql/data
+  #   restart: always
+
+  # app:
+  #   build:
+  #     context: .
+  #   image: app
+  #   container_name: django-app
+  #   command: >
+  #     sh -c "python manage.py migrate &&
+  #            python manage.py collectstatic --no-input --clear &&
+  #            gunicorn core.wsgi:application --bind 0.0.0.0:8000"
+  #   volumes:
+  #     - static:/code/static
+  #     - media:/code/media
+  #   depends_on:
+  #     - database
+  #   environment:
+  #     - DEBUG=False
+  #     - ALLOWED_HOSTS=*
+  #     - DATABASE-NAME=postgres
+  #     - DATABASE-USER=postgres
+  #     - DATABASE-PASSWORD=postgres
+  #     - DATABASE-HOST=database
+  #     - DATABASE-PORT=5432  
+
+# volumes:
+#   postgres:
+#   static:
+#   media:
+  # nginx:
+  #   image: nginx:latest
+  #   ports:
+  #     - "80:80"
+  #   volumes:
+  #     - ./docker/nginx.conf:/etc/nginx/nginx.conf
+  #     - ./docker/default.conf:/etc/nginx/conf.d/default.conf
+  #   depends_on:
+  #     - web
+  #   networks: 
+  #     - rayan  

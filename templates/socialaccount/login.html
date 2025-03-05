@@ -1,0 +1,65 @@
+<style>
+    /* CSS reset styles go here */
+    h1 {
+        direction: rtl;
+    }
+    /* Add styles for the div */
+    .container {
+            background-color: lightblue;
+            padding: 20px;
+            text-align: center; /* Optional: Center the content */
+        }
+
+        /* Add styles for the button */
+        .my-button {
+            background-color: dodgerblue;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Hover effect for the button */
+        .my-button:hover {
+            background-color: royalblue;
+        }
+</style>
+
+{#{% extends "socialaccount/base_entrance.html" %}#}
+{% load i18n %}
+{% load allauth %}
+{#{% block head_title %}#}
+{#    {% trans "Sign In" %}#}
+{#{% endblock head_title %}#}
+{% block content %}
+    {% if process == "connect" %}
+        {% element h1 %}
+            {% blocktrans with provider.name as provider %}Connect {{ provider }}{% endblocktrans %}
+        {% endelement %}
+        <p>
+            {% blocktrans with provider.name as provider %}You are about to connect a new third-party account from {{ provider }}.{% endblocktrans %}
+        </p>
+    {% else %}
+        <h1 style="direction: rtl;">
+        {% element h1 %}
+            {% blocktrans with provider.name as provider %}ثبت نام با گوگل{% endblocktrans %}
+        {% endelement %}
+        </h1>
+        <p dir="rtl">
+            {% blocktrans with provider.name as provider %}جهت ادامه برای ورود به حساب گوگل خود کلید ادامه را فشار دهید {% endblocktrans %}
+        </p>
+    {% endif %}
+    {% element form method="post" no_visible_fields=True %}
+        {% slot actions %}
+            {% csrf_token %}
+            <div dir="rtl">
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="my-button">{% blocktrans %}ادامه{% endblocktrans %}</button>
+            </form>
+            </div>
+        {% endslot %}
+    {% endelement %}
+{% endblock content %}
